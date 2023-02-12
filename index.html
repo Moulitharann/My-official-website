@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="login.css">
+
+</head>
+<body>
+    <div class="hero">
+        <div class="form-box">
+            <div class="button-box">
+                <div id="btn"></div>
+                <button type="button" class="toggle-btn" onclick="login()" >Log In</button>
+                <!-- <button type="button" class="toggle-btn"  onclick="register()">register</button> -->
+
+            </div>
+            <div id="login"  class="input-group">
+    <input  type="text" id="signup-username" placeholder="Username" class="input-field">
+    <input  type="email" id="signup-user" placeholder="Email" class="input-field">
+    <input type="password" id="signup-pass" placeholder="Password(must be greater than 6)" class="input-field">
+    <input id="register1" type="submit" class="submit-btn" >
+    <p class="rg">NOT a Exsiting user<a href="./register sample.html"> Register</a>  </p>     
+
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module">
+ 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+import { getDatabase ,set,ref,update,get,onValue} from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+import {  signInWithEmailAndPassword ,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyA7AOd2mm_yIsk9QkpAaMuA3w1E9xIjAHU",
+authDomain: "my-official-website-ca7fc.firebaseapp.com",
+databaseURL: "https://my-official-website-ca7fc-default-rtdb.firebaseio.com",
+projectId: "my-official-website-ca7fc",
+storageBucket: "my-official-website-ca7fc.appspot.com",
+messagingSenderId: "872206147296",
+appId: "1:872206147296:web:c40022447017a1b8cb3a85",
+measurementId: "G-E4ZJ0SKBVP"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
+
+    document.querySelector('#register1').addEventListener('click',function()
+    {
+        const email1 = document.querySelector('#signup-user').value 
+        const password1 = document.querySelector('#signup-pass').value
+        
+        signInWithEmailAndPassword(auth, email1, password1)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            const userId = auth.currentUser.uid;
+            onValue(ref(database, '/users/' + userId), (snapshot) => {
+                const username = (snapshot.val() && snapshot.val().username)
+                window.localStorage.setItem('loggedin',username);
+                window.location.href='h.html'    
+                
+                });
+        })
+})
+
+
+</script>
+</html>
