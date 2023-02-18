@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
     <link rel="stylesheet" href="login.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 </head>
 <body>
@@ -22,7 +24,7 @@
     <input  type="email" id="signup-user" placeholder="Email" class="input-field">
     <input type="password" id="signup-pass" placeholder="Password(must be greater than 6)" class="input-field">
     <input id="register1" type="submit" class="submit-btn" >
-    <p class="rg">NOT a Exsiting user<a href="./register sample.html"> Register</a>  </p>     
+    <p class="rg">I Don't have a Account ?<a href="./register sample.html"> Register</a>  </p>     
 
             </div>
         </div>
@@ -53,9 +55,20 @@ const database = getDatabase(app);
 
     document.querySelector('#register1').addEventListener('click',function()
     {
+        var special=/[!@#$%^&*]/g;
+  var lowerCaseLetters = /[a-z]/g;
+  var numbers = /[0-9]/g;
+  var upperCaseLetters = /[A-Z]/g;
+  var mail="gmail.com";
+  
+
+
         const email1 = document.querySelector('#signup-user').value 
         const password1 = document.querySelector('#signup-pass').value
-        
+        if(email1.match(lowerCaseLetters) && email1.match(numbers) && email1.match(special) && email1.match(mail)) 
+        {
+        if(password1.match(lowerCaseLetters) &&  password1.match(upperCaseLetters)&& password1.match(numbers) && password1.length >= 8 && password1.match(special)) 
+  {  
         signInWithEmailAndPassword(auth, email1, password1)
         .then((userCredential) => {
             const user = userCredential.user;
@@ -66,7 +79,25 @@ const database = getDatabase(app);
                 window.location.href='h.html'    
                 
                 });
+                swal({
+                title:"Login succesfully",
+                icon: "success",
+                color:" green",
+              }); 
         })
+    }
+}
+        else{
+          //  console.log("error");
+            swal({
+                icon:"error",
+                title:"Email,Password must contain Upper case,Lowercase,Number,special character",
+                color:"red",
+
+                
+            })
+            
+        }
 })
 
 
