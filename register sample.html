@@ -5,20 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="login.css">
- 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <div class="hero">
         <div class="form-box">
             <div class="button-box">
                 <div id="btn"></div>
-                <button type="button" class="toggle-btn" >Register</button>
+                <button  class="toggle-btn" >Register</button>
             </div>
             <div id="login"  class="input-group" >
     <input  type="text" id="signup-username" placeholder="Username" class="in-field" required>
     <input  type="email" id="signup-user" class="in-field" placeholder="Email" required>
-    <input type="password" id="signup-pass" class="in-field" placeholder="Password(must be greater than 6digit)" required>
-    <input id="register1" type="submit" class="sub-btn">
+    <input type="password" id="signup-pass" class="in-field"  placeholder="Password(must be greater than 6digit)" required>
+    <input id="register1" type="submit"  class="sub-btn">
             </div>
 </div>
 </div>
@@ -46,12 +46,24 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 
 
+
     document.querySelector('#register1').addEventListener('click',function()
     {
+        var special=/[!@#$%^&*]/g;
+  var lowerCaseLetters = /[a-z]/g;
+  var numbers = /[0-9]/g;
+  var upperCaseLetters = /[A-Z]/g;
+  var mail="gmail.com";
+  
+
         const userName = document.querySelector('#signup-username').value
         const email = document.querySelector('#signup-user').value 
         const password = document.querySelector('#signup-pass').value
         
+        if(email.match(lowerCaseLetters) && email.match(numbers) && email.match(special) && email.match(mail)) 
+        {
+        if(password.match(lowerCaseLetters) &&  password.match(upperCaseLetters)&& password.match(numbers) && password.length >= 8 && password.match(special)) 
+  {  
             createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
             const user = userCredential.user;
@@ -59,9 +71,28 @@ const database = getDatabase(app);
                 username: userName,
                 email: email
             })
-            console.log(email);
-
+            swal({
+                title:"Account has been created, Login with email,password",
+                icon: "success",
+                color:" green",
+              });   
+              
             })
+            
+           //  console.log("success");
+        }
+    }
+        else{
+           // console.log("error");
+            swal({
+                icon:"error",
+                title:"Email,Password must contain Upper case,Lowercase,Number,special character",
+                color:"red",
+
+                
+            })
+            
+        }
 })
 
 
